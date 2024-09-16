@@ -10,7 +10,7 @@ const Services = () => {
 
                 <h2 className='text-[#151515] font-bold text-4xl'>Our Service Area</h2>
 
-                <p className='text-[#737373] leading-relaxed max-w-[41rem] mx-auto'>The majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. </p>
+                <p className='text-[#737373] leading-relaxed max-w-[41rem] mx-auto'>The majority have suffered alteration in some form, by injected humour, or randomised words which do not look even slightly believable. </p>
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10'>

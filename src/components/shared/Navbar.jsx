@@ -53,6 +53,8 @@ const Navbar = () => {
                         <CiSearch className='text-2xl' />
                         <a className="btn btn-outline btn-primary px-6">Appointment</a>
                     </div>
+
+                    <Link href={"/login"}><button className='btn btn-primary ml-4'>Login</button></Link>
                 </div>
             </div>
         </div>
