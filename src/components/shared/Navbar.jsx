@@ -1,3 +1,5 @@
+"use client"
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -6,6 +8,9 @@ import { CiSearch } from "react-icons/ci";
 
 
 const Navbar = () => {
+
+    const session = useSession();
+    console.log(session);
 
     const navItems = [
         {
@@ -51,10 +56,19 @@ const Navbar = () => {
                     <div className="navbar-end flex items-center space-x-5">
                         <AiOutlineShopping className='text-2xl' />
                         <CiSearch className='text-2xl' />
-                        <a className="btn btn-outline btn-primary px-6">Appointment</a>
+                        <a className="btn btn-outline btn-primary px-6 shadow-md">Appointment</a>
                     </div>
 
-                    <Link href={"/login"}><button className='btn btn-primary ml-4'>Login</button></Link>
+                    {session?.data?.user && <Image className='rounded-full w-[50px] h-[50px] ml-4' src={session?.data?.user?.image} alt={session?.data?.user?.name} height={100} width={100} />}
+
+                    {/* {
+                        session?.status === "loading" && <span className="loading loading-spinner loading-md"></span>
+                    } */}
+
+                    {!session.data ?
+                        <Link href={"/login"}><button className='btn btn-primary ml-4 px-5'>{session?.status === "loading" ? <span className="loading loading-spinner loading-md"></span> : "Login"}</button></Link> :
+                        <button onClick={()=> signOut()} className='btn btn-primary ml-4 px-5 border-orange-700'>Logout</button>
+                    }
                 </div>
             </div>
         </div>
