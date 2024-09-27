@@ -1,12 +1,16 @@
 import React from 'react';
 import ServiceCard from '../cards/ServiceCard';
-import { services } from '@/lib/services';
+import { carServices } from '@/services/getServices';
 
-const Services = () => {
+
+const Services = async () => {
+
+    const allServices = await carServices();
+
     return (
         <div className='container mx-auto mb-24'>
             <div className='text-center space-y-4'>
-                <h6 className='text-[#FF3811] font-bold text-xl'>Service</h6>
+                <h6 className='text-[#FF3811] font-bold text-xl'>Services</h6>
 
                 <h2 className='text-[#151515] font-bold text-4xl'>Our Service Area</h2>
 
@@ -14,11 +18,11 @@ const Services = () => {
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10'>
-                {
-                    services.map((service) => (
-                        <ServiceCard 
-                        key={service.service_id} 
-                        service={service}
+                {allServices?.length > 0 &&
+                    allServices?.map((service) => (
+                        <ServiceCard
+                            key={service.service_id}
+                            service={service}
                         ></ServiceCard>
                     ))
                 }

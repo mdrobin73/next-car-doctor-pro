@@ -2,6 +2,7 @@
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 import { AiOutlineShopping } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
@@ -9,6 +10,7 @@ import { CiSearch } from "react-icons/ci";
 
 const Navbar = () => {
 
+    const pathName = usePathname();
     const session = useSession();
     console.log(session);
 
@@ -24,6 +26,10 @@ const Navbar = () => {
         {
             title: "Services",
             path: "/services"
+        },
+        {
+            title: "MyBookings",
+            path: "/my-booking"
         },
         {
             title: "Blog",
@@ -48,7 +54,7 @@ const Navbar = () => {
                     <div className="navbar-center hidden lg:flex items-center space-x-10">
                         {
                             navItems.map((item) => (
-                                <Link className='font-semibold text-[#444444] hover:text-primary duration-300' href={item.path} key={item.path}>{item.title}</Link>
+                                <Link className={`font-semibold text-[#444444] hover:text-primary duration-300 ${pathName == item.path && "text-[#FF3811]"}`} href={item.path} key={item.path}>{item.title}</Link>
                             ))
                         }
                     </div>
@@ -66,7 +72,9 @@ const Navbar = () => {
                     } */}
 
                     {!session.data ?
-                        <Link href={"/login"}><button className='btn btn-primary ml-4 px-5'>{session?.status === "loading" ? <span className="loading loading-spinner loading-md"></span> : "Login"}</button></Link> :
+                        // <Link href={"/login"}><button className='btn btn-primary ml-4 px-5'>{session?.status === "loading" ? <span className="loading loading-spinner loading-md"></span> : "Login"}</button></Link> :
+                        <Link href={"/login"}><button className='btn btn-primary ml-4 px-5'>Login</button></Link> :
+                        
                         <button onClick={()=> signOut()} className='btn btn-primary ml-4 px-5 border-orange-700'>Logout</button>
                     }
                 </div>
