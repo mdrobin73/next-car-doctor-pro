@@ -8,7 +8,7 @@ export const GET = async () => {
         const db = await connectDB();
         const serviceCollection = db.collection("allServices");
         const services = await serviceCollection.find().toArray();
-        return NextResponse.json({message: "Successfully got all data", services}, { status: 200 });
+        return NextResponse.json(services, { status: 200 });
 
     } catch (error) {
         return NextResponse.json({ message: "Internal Server Error", error }, { status: 500 });
