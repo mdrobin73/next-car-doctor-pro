@@ -34,7 +34,7 @@ const Page = async ({ params }) => {
 
                     <div className='grid grid-cols-2 gap-6'>
                         {
-                            facility.map((item) => (
+                            facility?.map((item) => (
                                 <div key={_id} className='bg-[#F3F3F3] p-8 border-t-4 rounded-xl border-t-[#FF3811]'>
                                     <h2 className='text-xl text-[#444444] font-bold mb-3'>{item.name}</h2>
                                     <p className='text-[#737373] leading-7'>{item.details}</p>

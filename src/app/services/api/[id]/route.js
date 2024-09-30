@@ -19,7 +19,7 @@ export const GET = async (request, {params}) => {
             return NextResponse.json({ message: "Service not found" }, { status: 404 });
         }
 
-        return NextResponse.json({message: "Successfully found the data", service}, { status: 200 });
+        return NextResponse.json(service, { status: 200 });
         
     } catch (error) {
         return NextResponse.json({ message: "Internal Server Error", error }, { status: 500 });
