@@ -13,10 +13,9 @@ export const GET = async (request, {params}) => {
             return NextResponse.json({message: "No data found!"}, {status: 404})
         }
 
-        return NextResponse.json(bookings, { status: 200 });
+        return NextResponse.json({message: "Data retrieved successfully", bookings}, { status: 200 });
 
     } catch (error) {
-        console.error("Failed to load booking data:", error);
-        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error", error }, { status: 500 });
     }
 };

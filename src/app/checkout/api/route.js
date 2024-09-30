@@ -17,8 +17,7 @@ export const POST = async (request) => {
         return NextResponse.json({message: "Service booked successfully", newBooking}, {status: 200});
 
     } catch (error) {
-        console.log("Failed to book the service", error);
-        return NextResponse.json({message: "Internal server error"}, {status: 500});
+        return NextResponse.json({message: "Internal server error", error}, {status: 500});
     }
 
 }

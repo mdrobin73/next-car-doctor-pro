@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -12,7 +13,7 @@ const Bookings = () => {
     const [bookings, setBookings] = useState([]);
 
     const handleDelete = async (id) => {
-        const res = await axios.delete(`http://localhost:3000/my-booking/api/delete-booking/${id}`);
+        const res = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/my-booking/api/booking/${id}`);
         console.log(res.data);
         toast.success(res?.data?.message)
         setBookings(prevBookings => prevBookings.filter(booking => booking._id !== id))
@@ -22,7 +23,7 @@ const Bookings = () => {
         const loadBookings = async () => {
             try {
                 if (session?.data?.user?.email) {
-                    const res = await axios.get(`http://localhost:3000/my-booking/api/${session?.data?.user?.email}`);
+                    const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/my-booking/api/${session?.data?.user?.email}`);
                     setBookings(res.data);
                 }
             } catch (error) {
@@ -60,6 +61,7 @@ const Bookings = () => {
                                 <th>Price</th>
                                 <th>Booking Date</th>
                                 <th>Actions</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,9 +80,11 @@ const Bookings = () => {
                                         <td className='font-bold'>${price}</td>
                                         <td>{date}</td>
                                         <th>
-                                            <button className="btn btn-ghost underline hover:text-orange-500">Edit</button>
+                                            <Link href={`/my-booking/update/${_id}`}><button className="btn btn-ghost underline hover:text-orange-500">Edit</button></Link>
+
                                             <button onClick={() => handleDelete(_id)} className="btn btn-primary ml-3 ">Delete</button>
                                         </th>
+                                        <td className='text-slate-900'>Pending</td>
                                     </tr>
                                 ))
                             }

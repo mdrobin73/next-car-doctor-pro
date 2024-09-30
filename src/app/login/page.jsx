@@ -4,14 +4,16 @@ import Image from 'next/image';
 import React from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import SocialSignIn from '@/components/shared/SocialSignIn';
 
 
 const Page = () => {
 
-    const router = useRouter();
+    // const router = useRouter();
     const session = useSession();
+    const searchParams = useSearchParams();
+    const path = searchParams.get("redirect");
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -22,11 +24,12 @@ const Page = () => {
         const res = await signIn("credentials", {
             email,
             password,
-            redirect: false
+            redirect: true,
+            callbackUrl: path ? path : "/"
         })
-        if (res.status === 200) {
-            router.push("/");
-        }
+        // if (res.status === 200) {
+        //     router.push("/");
+        // }
     }
 
     return (
@@ -47,7 +50,7 @@ const Page = () => {
                         <input type="password" name='password' placeholder='Password' />
                     </label>
 
-                    <button type='submit' className='btn btn-primary w-full'>{session?.status === "loading" ? <span className="loading loading-spinner loading-md"></span> : "Sign In"}</button>
+                    <button type='submit' className='btn btn-primary w-full'>{session?.status === "loading" ? <span className="loading loading-spinner loading-md"></span> : "Login"}</button>
                 </form>
 
                 <div className='text-center mt-6'>

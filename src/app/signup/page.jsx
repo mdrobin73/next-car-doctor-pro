@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-const page = () => {
+const Page = () => {
 
     const router = useRouter();
 
@@ -18,7 +18,7 @@ const page = () => {
             email: event.target.email.value,
             password: event.target.password.value
         }
-        const res = await fetch("http://localhost:3000/signup/api", {
+        const res = await fetch(`process.env.${process.env.NEXT_PUBLIC_BASE_URL}/signup/api`, {
             method: "POST",
             body: JSON.stringify(newUser),
             headers: {
@@ -66,4 +66,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

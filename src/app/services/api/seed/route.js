@@ -10,8 +10,9 @@ export const GET = async () => {
     try {
         await serviceCollection.deleteMany();
         const res = await serviceCollection.insertMany(services);
-        return NextResponse.json({message: "Seeded Successfully"})
+        return NextResponse.json({message: "Seeded Successfully", res},{status: 200});
+
     } catch (error) {
-        console.log(error);
+        return NextResponse.json({message: "Failed to insert data into DB", error}, {status: 500});
     }
 }

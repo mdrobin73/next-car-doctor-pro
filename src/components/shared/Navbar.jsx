@@ -12,7 +12,6 @@ const Navbar = () => {
 
     const pathName = usePathname();
     const session = useSession();
-    console.log(session);
 
     const navItems = [
         {
@@ -66,13 +65,8 @@ const Navbar = () => {
                     </div>
 
                     {session?.data?.user && <Image className='rounded-full w-[50px] h-[50px] ml-4' src={session?.data?.user?.image} alt={session?.data?.user?.name} height={100} width={100} />}
-
-                    {/* {
-                        session?.status === "loading" && <span className="loading loading-spinner loading-md"></span>
-                    } */}
-
+                    
                     {!session.data ?
-                        // <Link href={"/login"}><button className='btn btn-primary ml-4 px-5'>{session?.status === "loading" ? <span className="loading loading-spinner loading-md"></span> : "Login"}</button></Link> :
                         <Link href={"/login"}><button className='btn btn-primary ml-4 px-5'>Login</button></Link> :
                         
                         <button onClick={()=> signOut()} className='btn btn-primary ml-4 px-5 border-orange-700'>Logout</button>

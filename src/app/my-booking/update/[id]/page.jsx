@@ -1,5 +1,4 @@
 "use client"
-import { serviceDetails } from '@/services/getServices';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -7,51 +6,38 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const CheckOut = ({ params }) => {
+const Page = ({ params }) => {
 
     const session = useSession();
-    console.log(session);
     const router = useRouter();
 
-    const [service, setService] = useState({});
-    const { _id, price, img, title } = service || {};
+    const [booking, setBooking] = useState({});
+    
+    const {date, phone, address, image:img, serviceTitle:title, price} = booking || {};
 
-    const handleBooking = async (event) => {
+    const loadBooking = async () => {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/my-booking/api/booking/${params.id}`)
+        setBooking(res.data.res);
+    }
+
+    const handleUpdateBooking = async (event) => {
         event.preventDefault();
-
-        const newBooking = {
-            name: session?.data?.user?.name,
-            email: session?.data?.user?.email,
+        const updatedData = {
             date: event.target.date.value,
-            price: price,
             phone: event.target.phone.value,
-            address: event.target.address.value,
-            serviceTitle: title,
-            serviceId: _id,
-            image: img
+            address: event.target.address.value
         }
 
-        try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/checkout/api`, newBooking)
-            toast.success(res?.data?.message);
-            event.target.reset();
-            if (res?.data) {
-                router.push("/my-booking");
-            }
-
-        } catch (error) {
-            console.error("Error making the booking request", error);
+        const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/my-booking/api/booking/${params.id}`, updatedData)
+        toast.success(res?.data?.message);
+        if (res.data) {
+            router.push("/my-booking")
         }
     }
 
     useEffect(() => {
-        const loadService = async () => {
-            const details = await serviceDetails(params.id);
-            setService(details);
-        }
-        loadService();
-
-    }, [params.id])
+        loadBooking();
+    }, [params])
 
     return (
         <div className='container mx-auto my-10'>
@@ -61,12 +47,12 @@ const CheckOut = ({ params }) => {
                 </div>
 
                 <div className='absolute top-0 left-0 h-full flex items-center w-full rounded-xl' style={{ backgroundImage: "linear-gradient(to right, rgba(0,0,0,100%), rgba(21,21,21, 0%))" }}>
-                    <h1 className='text-[#FF3811] text-4xl font-bold ml-14 text-'>Check Out</h1>
+                    <h1 className='text-[#FF3811] text-4xl font-bold ml-14 text-'>Update Booking</h1>
                 </div>
             </div>
 
             <div className='mt-16 bg-[#F3F3F3] p-16 rounded-xl shadow-lg'>
-                <form onSubmit={handleBooking}>
+                <form onSubmit={handleUpdateBooking}>
                     <div className='grid grid-cols-2 gap-6'>
                         <label className="form-control w-full">
                             <div className="label">
@@ -79,7 +65,7 @@ const CheckOut = ({ params }) => {
                             <div className="label">
                                 <span className="label-text">Date</span>
                             </div>
-                            <input defaultValue={new Date().toISOString().split("T")[0]} type="date" name='date' className="input input-bordered w-full" required />
+                            <input defaultValue={date} type="date" name='date' className="input input-bordered w-full" required />
                         </label>
 
                         <label className="form-control w-full">
@@ -100,19 +86,19 @@ const CheckOut = ({ params }) => {
                             <div className="label">
                                 <span className="label-text">Phone</span>
                             </div>
-                            <input type="text" placeholder="Phone No." name='phone' className="input input-bordered w-full" required />
+                            <input defaultValue={phone} type="text" placeholder="Phone No." name='phone' className="input input-bordered w-full" required />
                         </label>
 
                         <label className="form-control w-full">
                             <div className="label">
                                 <span className="label-text">Address</span>
                             </div>
-                            <input type="text" placeholder="Address" name='address' className="input input-bordered w-full" required />
+                            <input defaultValue={address} type="text" placeholder="Address" name='address' className="input input-bordered w-full" required />
                         </label>
                     </div>
 
                     <div className='mt-6'>
-                        <button type='submit' className='btn btn-primary w-full text-lg font-semibold'>Order Confirm</button>
+                        <button type='submit' className='btn btn-primary w-full text-lg font-semibold'>Confirm Update</button>
                     </div>
                 </form>
             </div>
@@ -120,4 +106,4 @@ const CheckOut = ({ params }) => {
     );
 };
 
-export default CheckOut;
+export default Page;
